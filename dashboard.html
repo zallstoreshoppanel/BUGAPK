@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard APK Banned</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: url('https://files.catbox.moe/3c6gir.jpg') no-repeat center center fixed;
+      background-size: cover;
+      backdrop-filter: brightness(0.3);
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+
+    h1 {
+      font-size: 30px;
+      margin-bottom: 10px;
+      color: #00ffe5;
+    }
+
+    h2 {
+      font-size: 16px;
+      margin-bottom: 30px;
+      color: #ccc;
+    }
+
+    .input-container {
+      margin-bottom: 30px;
+      width: 100%;
+      max-width: 400px;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      background-color: #222;
+      color: #00ffe5;
+      outline: none;
+      text-align: center;
+    }
+
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+      width: 100%;
+      max-width: 1000px;
+    }
+
+    .card {
+      background: rgba(0, 0, 0, 0.6);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 0 10px #000;
+      transition: all 0.3s ease;
+      border: 1px solid #00ffe5;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 0 20px #00ffe5;
+    }
+
+    .card h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+      color: #00ffe5;
+    }
+
+    .card p {
+      font-size: 14px;
+      color: #ccc;
+      margin-bottom: 15px;
+    }
+
+    .card button {
+      background-color: #00ffe5;
+      color: black;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .card button:hover {
+      background-color: #00bfa5;
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 999;
+    }
+
+    .loader-wrapper {
+      display: flex;
+      gap: 10px;
+    }
+
+    .loader-ring {
+      width: 16px;
+      height: 16px;
+      border: 4px solid #00ffe5;
+      border-top: 4px solid transparent;
+      border-radius: 50%;
+      animation: spin 0.9s linear infinite;
+    }
+
+    .popup-box {
+      background: #111;
+      padding: 20px 30px;
+      border-radius: 10px;
+      border: 1px solid #00ffe5;
+      text-align: center;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .popup-box p {
+      margin-bottom: 15px;
+      color: #00ffe5;
+      font-size: 17px;
+    }
+
+    .popup-box button {
+      padding: 8px 16px;
+      background: #00ffe5;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.8); }
+      to { opacity: 1; transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+  <h1>PILIHAN BANNED</h1>
+  <h2>Masukkan Nomor WhatsApp Target</h2>
+
+  <div class="input-container">
+    <input type="text" id="targetNumber" placeholder="Contoh: 628xxxxx">
+  </div>
+
+  <div class="card-container">
+    <div class="card">
+      <h3>BANNED WA V1</h3>
+      <p>Metode banned klasik yang powerful, cocok untuk spam bot manual.</p>
+      <button onclick="startProcess('BANNED WA V1')">Eksekusi V1</button>
+    </div>
+
+    <div class="card">
+      <h3>BANNED WA V2</h3>
+      <p>Versi terbaru dengan bypass rate-limit & filter anti banned.</p>
+      <button onclick="startProcess('BANNED WA V2')">Eksekusi V2</button>
+    </div>
+
+    <div class="card">
+      <h3>RISET UI</h3>
+      <p>Uji coba terhadap user interface crash untuk banned WA.</p>
+      <button onclick="startProcess('RISET UI')">Luncurkan</button>
+    </div>
+
+    <div class="card">
+      <h3>INFO BANNED</h3>
+      <p>Lihat panduan & perbedaan metode banned V1 dan V2.</p>
+      <button onclick="startProcess('INFO BANNED')">Buka Info</button>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay">
+    <div class="loader-wrapper" id="loaderContent">
+      <div class="loader-ring"></div>
+      <div class="loader-ring"></div>
+      <div class="loader-ring"></div>
+    </div>
+    <div class="popup-box" id="popupContent" style="display:none;">
+      <p id="popupText">Berhasil!</p>
+      <button onclick="closePopup()">OKE</button>
+    </div>
+  </div>
+
+  <script>
+    function startProcess(actionName) {
+      const number = document.getElementById("targetNumber").value.trim();
+      const overlay = document.getElementById("overlay");
+      const loader = document.getElementById("loaderContent");
+      const popup = document.getElementById("popupContent");
+      const popupText = document.getElementById("popupText");
+
+      if (!number) {
+        popupText.innerText = "Silakan masukkan nomor WhatsApp terlebih dahulu!";
+        loader.style.display = "none";
+        popup.style.display = "block";
+        overlay.style.display = "flex";
+        return;
+      }
+
+      overlay.style.display = "flex";
+      loader.style.display = "flex";
+      popup.style.display = "none";
+
+      setTimeout(() => {
+        loader.style.display = "none";
+        popupText.innerText = `✅ ${actionName} ke ${number} berhasil dijalankan!`;
+        popup.style.display = "block";
+      }, 40000);
+    }
+
+    function closePopup() {
+      document.getElementById("overlay").style.display = "none";
+    }
+  </script>
+</body>
+</html>
